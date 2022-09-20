@@ -1,0 +1,84 @@
+#include "Obsluga.hh"
+#include "Dron.hh"
+
+using namespace std;
+
+void WyswietlLiczniki() {
+  cout << "Ilosc lacznie stworzonych obiektow klasy Wektor3D: ";
+  cout << Wektor3D::ZwrocLacznaIloscWektorow() << endl;
+  cout << "Ilosc istniejacych obiektow klasy Wektor3D: ";
+  cout << Wektor3D::ZwrocIloscWektorow() << endl;
+  cout << "Ilosc lacznie stworzonych obiektow klasy ObiektSceny: ";
+  cout << ObiektSceny::ZwrocIloscStworzonych() << endl;
+  cout << "Ilosc istniejacych obiektow klasy ObiektSceny: ";
+  cout << ObiektSceny::ZwrocIloscIstniejacych() << endl;
+}
+void WyswietlMenu(){
+  cout << "p - dodanie przeszkody" << endl;
+  cout << "d- dodanie drona" << endl;
+  cout << "o - obrot drona" << endl;
+  cout << "j - lot na wprost" << endl;
+  cout << "s - zmien drona" << endl;
+  cout << "w - wyswietl menu" << endl << endl;
+  cout << "k - koniec dzialania programu" << endl;
+}
+void UstawLacze(PzG::LaczeDoGNUPlota &Lacze, int ilosc) {
+  std::string NazwaPliku;
+  for (int i = 0; i < ilosc; ++i) {
+    NazwaPliku = "Korpus";
+    NazwaPliku.append(to_string(i));
+    NazwaPliku.append(".dat");
+    Lacze.DodajNazwePliku(NazwaPliku.c_str());
+    for (int j = 0; j < ILOSC_ROTOROW; ++j) {
+      NazwaPliku = "Rotor";
+      NazwaPliku.append(to_string(i));
+      NazwaPliku.append("_");
+      NazwaPliku.append(to_string(j));
+      NazwaPliku.append(".dat");
+      Lacze.DodajNazwePliku(NazwaPliku.c_str());
+    }
+  }
+  Lacze.ZmienTrybRys(PzG::TR_3D);
+  Lacze.UstawZakresY(-100, 300);
+  Lacze.UstawZakresX(-100, 300);
+  Lacze.UstawZakresZ(-100, 300);
+  Lacze.Inicjalizuj();
+}
+
+void WyswietlNumer(int NumerDrona, Wektor3D wek)
+{
+  cout << endl << "Aktualnie wyselekcjonowanym dronem jest:" << endl;
+  cout << "Dron "<< NumerDrona+1 << ". Wspolrzedne: " << wek << endl;
+
+}
+
+void Ruch(PzG::LaczeDoGNUPlota &Lacze, int NumerDrona, Scena sc)
+{
+  Wektor3D ruch_uz, ruch_kon;
+  double kat;
+  int ilosc_klatek;
+  cout << "Dlugosc lotu: ";
+  cin >> ruch_uz[0];
+  ilosc_klatek = abs(ruch_uz[0]);
+  cout << "Kat wznoszenia: ";
+  cin >> kat;
+  ruch_kon[0] = ruch_uz[0] * cos((sc.ZwrocDrona()->ZwrocKat()) * M_PI / 180);
+  ruch_kon[1] = ruch_uz[0] * sin((sc.ZwrocDrona()->ZwrocKat()) * M_PI / 180);
+  ruch_kon[2] = tan(kat * M_PI / 180) * abs(ruch_uz[0]);
+
+  for (int klatka = 0; klatka < ilosc_klatek; ++klatka){
+    sc.ZwrocDrona()->Ruch(ruch_kon/ilosc_klatek);	 
+    if(sc.CzyKolizja(sc.ZwrocDrona())) {
+      cout << endl << "Kolizja, lot przerwany!" << endl;
+      break;
+    }
+    
+    sc.ZwrocDrona()->Animacja(Lacze, NumerDrona);
+    sc.ZwrocDrona()->Zapisz(NumerDrona);
+    Lacze.Rysuj();
+    usleep(20000);
+  }
+  
+  sc.ZwrocDrona()->Aproksymacja.punkt_srodka=sc.ZwrocDrona()->Srodek;
+  
+}

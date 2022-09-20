@@ -1,0 +1,26 @@
+#ifndef FABRYKAOBIEKTOW_HH
+#define FABRYKAOBIEKTOW_HH
+#include <memory>
+#include "ObiektSceny.hh"
+#include "Przeszkoda.hh"
+#include "Dron.hh"
+
+class FabrykaObiektow
+{
+ public:
+  std::shared_ptr<ObiektSceny> StworzObiekt(int rodzaj)
+  {
+    switch(rodzaj){
+    case 0:{
+      return std::make_shared<Przeszkoda>();
+      
+    }
+    case 1:{
+      return std::make_shared<Dron>();
+    }
+    }
+    return nullptr;
+  }
+};
+
+#endif

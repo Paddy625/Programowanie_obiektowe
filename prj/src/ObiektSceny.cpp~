@@ -1,0 +1,35 @@
+#include "ObiektSceny.hh"
+#define PR_DRONA 20
+
+int ObiektSceny::IloscIstniejacych=0;
+int ObiektSceny::IloscStworzonych=0;
+
+bool ObiektSceny::CzyKolizja(std::shared_ptr<ObiektSceny> AktualnyDron) {
+    // Srodek + polowa dlugosci boku po danej osi + promien aproksymacji dron
+    // Tak po kazdej osi X, Y, Z i potem sprawdzic czy srodek drona
+    // jest Xmin < X < Xmax
+    // a w Xmin wzor z 1 linijki tylko z minusami ??
+  double Xmax = this->Srodek[0] + PR_DRONA + this->SzerokoscX/2;
+    double Xmin = this->Srodek[0] - PR_DRONA - this->SzerokoscX/2;
+
+    double Ymax = this->Srodek[1] + PR_DRONA + this->DlugoscY/2;
+    double Ymin = this->Srodek[1] - PR_DRONA - this->DlugoscY/2;
+
+    double Zmax =
+      this->ZwrocSrodek()[2] + (AktualnyDron->Aproksymacja.wysokosc / 2);
+    double Zmin =
+      this->ZwrocSrodek()[2] - (AktualnyDron->Aproksymacja.wysokosc / 2);
+    
+
+    if (Xmin <= AktualnyDron->ZwrocSrodek()[0] &&
+        AktualnyDron->ZwrocSrodek()[0] <= Xmax &&
+        Ymin <= AktualnyDron->ZwrocSrodek()[1] &&
+        AktualnyDron->ZwrocSrodek()[1] <= Ymax) 
+      {
+	return true;
+      }
+    else  
+      {
+	return false;
+      }
+}

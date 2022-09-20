@@ -1,0 +1,40 @@
+#include "Prostopadloscian.hh"
+
+void Prostopadloscian::Inicjalizuj() {
+
+  Punkt.push_back(Wektor3D(0, 0, 20));
+  Punkt.push_back(Wektor3D(0, 0, 0)); 
+
+  Punkt.push_back(Wektor3D(20, -20, 20));
+  Punkt.push_back(Wektor3D(20, -20, 0));
+  
+  Punkt.push_back(Wektor3D(20, 20, 20));
+  Punkt.push_back(Wektor3D(20, 20, 0));
+ 
+  Punkt.push_back(Wektor3D(-20, 20, 20));
+  Punkt.push_back(Wektor3D(-20, 20, 0));
+
+  Punkt.push_back(Wektor3D(-20, -20, 20));
+  Punkt.push_back(Wektor3D(-20, -20, 0));
+
+  Srodek=(Wektor3D(0,0,10));
+
+
+  SzerokoscX=10;
+  DlugoscY=180;
+  WysokoscZ=150;
+  
+  
+  Punkt_globalny = Punkt;
+}
+
+
+
+Prostopadloscian Prostopadloscian::operator+(Wektor3D Arg2) {
+  for (long unsigned int i = 0; i < Punkt.size(); ++i) {
+    Punkt_globalny[i] += Arg2;
+  }
+  Wektor_Trans = Wektor_Trans + Arg2;
+  Srodek+=Arg2;
+  return (*this);
+}

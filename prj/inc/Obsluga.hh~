@@ -1,0 +1,33 @@
+#ifndef OBSLUGA_HH
+#define OBSLUGA_HH
+#include "Scena.hh"
+#include "lacze_do_gnuplota.hh"
+#define ILOSC_ROTOROW 4
+/*!
+ *\brief Funkcja wyswietla menu uzytkownika
+ */
+void WyswietlMenu();
+
+/*!
+ *\brief Funkcja wyswietla liczniki Wektor3D i Obiektow
+ */
+void WyswietlLiczniki();
+
+/*!
+ *\brief Wyswietla numer drona i jego wspolrzedne
+ */
+void WyswietlNumer(int NumerDrona, Wektor3D wek);
+
+/*!
+ *\brief Funkcja ustawia parametry lacza do GNUPlota
+ *
+ *Funkcja ustawia parametry lacza takie jak:
+ *nazwy plikow,
+ *tryb rysowania,
+ *zakresy
+ */
+void UstawLacze(PzG::LaczeDoGNUPlota &Lacze, int ilosc);
+
+void Ruch(PzG::LaczeDoGNUPlota &Lacze, int NumerDrona, Scena sc);
+
+#endif
